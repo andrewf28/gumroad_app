@@ -1,12 +1,15 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
+import CoursesList from "./features/courses/CoursesList"
 
 function App() {
   const [count, setCount] = useState(0)
 
-  return <>test</> 
+  return <>
+  <h1>Creator Landing Page</h1>
+  <CoursesList/>
+  </> 
 }
 
 export default App
