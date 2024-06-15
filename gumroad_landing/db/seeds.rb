@@ -14,7 +14,7 @@ Course.destroy_all
 
 20.times do
     Course.create(
-        title:Faker.Lorem.sentence(word_count: 3),
+        title:Faker::Lorem.sentence(word_count: 3),
         price:Faker::Number.between(from: 1, to: 10),
         ratingVal:Faker::Number.between(from: 1, to: 5),
         ratingAmt:Faker::Number.between(from: 1, to: 300),
@@ -23,3 +23,4 @@ Course.destroy_all
 
 
     )
+end
