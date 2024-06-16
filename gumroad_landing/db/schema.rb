@@ -10,15 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_06_15_182906) do
-  create_table "courses", force: :cascade do |t|
-    t.string "courseImage"
-    t.string "authorAvi"
-    t.string "title"
-    t.integer "price"
-    t.integer "ratingVal"
+ActiveRecord::Schema[7.2].define(version: 2024_06_16_010722) do
+  create_table "creators", force: :cascade do |t|
+    t.string "name"
+    t.decimal "rating"
     t.integer "ratingAmt"
+    t.string "pfp"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "products", force: :cascade do |t|
+    t.string "title"
+    t.decimal "price"
+    t.decimal "rating"
+    t.integer "ratingAmt"
+    t.string "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "creator_id", null: false
+    t.index ["creator_id"], name: "index_products_on_creator_id"
+  end
+
+  add_foreign_key "products", "creators"
 end
