@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+const API_URL = "http://127.0.0.1:3000/api/v1";
+
 
 const Card = styled.div`
   background-color: #ffffff;
@@ -47,16 +49,43 @@ const Text = styled.p`
   font-size: 16px;
 `;
 
-function ImageComponent({ imageUrl, title, text }) {
+function ImageComponent({ image_id }) {
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    async function loadImage() {
+      console.log(API_URL);
+      try {
+        const imageResponse = await fetch(`${API_URL}/images/${image_id}`);
+        if (imageResponse.ok) {
+          const imageData = await imageResponse.json();
+          setImage(imageData);
+        } else {
+          throw new Error('Failed to fetch creator data');
+        }
+      } catch (e) {
+        setError('An Error Occurred...');
+        console.log('An error occurred', e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadImage();
+  }, [image_id]);
+
+  if (!image) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Card>
       <ImageContainer>
-        <Image src={imageUrl} alt={title} />
+        <Image src={image.image_url} alt={image.title} />
       </ImageContainer>
       <TextContainer>
         <VerticalBar />
-        <Title>{title}</Title>
-        <Text>{text}</Text>
+        <Title>{image.title}</Title>
+        <Text>{image.description}</Text>
       </TextContainer>
     </Card>
   );
