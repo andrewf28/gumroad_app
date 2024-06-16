@@ -47,23 +47,15 @@ Creator.all.each do |creator|
   layout = [
     {
       type: 'image',
-      props: {
-        url: creator.images.sample.image_url,
-        alt: creator.images.sample.title
-      }
+      image_id: creator.images.sample.id
     },
     {
       type: 'rich_text',
-      props: {
-        content: creator.rich_texts.sample.description
-      }
+      rich_text_id: creator.rich_texts.sample.id
     },
     {
       type: 'products',
-      props: {
-        title: 'Featured Products',
-        product_ids: creator.products.pluck(:id)
-      }
+      products: nil
     }
   ]
 

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       resources :creators do
         resources :products, only: [:index]
         resource :creator_layout, only: [:show]
+        resource :images, only: [:index]
       end
 
       # Endpoint for viewing routes information

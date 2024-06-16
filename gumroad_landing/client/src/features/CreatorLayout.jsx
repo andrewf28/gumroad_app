@@ -24,41 +24,44 @@ const Container = styled.div`
 function CreatorLayout({ creatorId }) {
   const [layout, setLayout] = useState([]);
   const [products, setProducts] = useState([]);
+  const [images, setImages] = useState([]);
+  const [richTexts, setRichTexts] = useState([]);
 
   useEffect(() => {
-    async function fetchLayout() {
+    async function fetchData() {
       try {
-        const response = await fetch(`${API_URL}/creators/${creatorId}/creator_layout`);
-        const data = await response.json();
-        setLayout(data.layout);
+        const [layoutResponse, productsResponse, imagesResponse, richTextsResponse] = await Promise.all([
+          fetch(`${API_URL}/creators/${creatorId}/creator_layout`),
+          fetch(`${API_URL}/creators/${creatorId}/products`),
+          fetch(`${API_URL}/creators/${creatorId}/images`),
+          fetch(`${API_URL}/creators/${creatorId}/rich_texts`),
+        ]);
+
+        const layoutData = await layoutResponse.json();
+        const productsData = await productsResponse.json();
+        const imagesData = await imagesResponse.json();
+        const richTextsData = await richTextsResponse.json();
+
+        setLayout(layoutData.layout);
+        setProducts(productsData);
+        setImages(imagesData);
+        setRichTexts(richTextsData);
       } catch (error) {
-        console.error('Error fetching creator layout:', error);
+        console.error('Error fetching data:', error);
       }
     }
 
-    fetchLayout();
-  }, [creatorId]);
-
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const response = await fetch(`${API_URL}/creators/${creatorId}/products`);
-        const data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    }
-
-    fetchProducts();
-  }, [creatorId]);
+    fetchData();
+  }, [creatorId])
 
   const renderComponent = (component, index) => {
     switch (component.type) {
       case 'image':
-        return <ImageComponent key={index} url={component.props.url} alt={component.props.alt} />;
+        const image = images.find((img) => img.id === component.image_id);
+        return image ? <ImageComponent key={index} url={image.image_url} alt={image.title} /> : null;
       case 'rich_text':
-        return <RichText key={index} content={component.props.content} />;
+        const richText = richTexts.find((rt) => rt.id === component.rich_text_id);
+        return richText ? <RichText key={index} content={richText.description} /> : null;
       case 'products':
         return <ProductsList key={index} products={products} />;
       default:
