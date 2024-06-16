@@ -161,7 +161,7 @@ function ProductsList({ creatorId }) {
             {product.title}
           </Typography>
               <div className={classes.authorInfo}>
-                <Avatar className={classes.authorAvatar} src={product.authorAvi} />
+                <Avatar className={classes.authorAvatar} src={creator.pfp} />
                 <Typography variant="body2">
                   {creator.name}
                 </Typography>
