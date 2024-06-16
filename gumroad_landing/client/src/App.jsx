@@ -1,16 +1,16 @@
-import { useState } from 'react'
-
-
-import './App.css'
-import CoursesList from "./features/courses/CoursesList"
+// App.js
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import CreatorLanding from './pages/CreatorLanding';
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return <>
-  <h1>Creator Landing Page</h1>
-  <CoursesList/>
-  </> 
+  return (
+    <Router>
+      <Routes>
+        <Route path="/creators/:creatorId" element={<CreatorLanding />} />
+        {/* Other routes */}
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

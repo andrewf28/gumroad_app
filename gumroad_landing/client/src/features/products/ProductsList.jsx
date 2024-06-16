@@ -5,7 +5,7 @@ import { Rating } from "@material-ui/lab";
 const API_URL = "http://127.0.0.1:3000/api/v1";
 
 const useStyles = makeStyles((theme) => ({
-    courseCard: {
+    productCard: {
         width: 200,
         height: 450,
         display: "flex",
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
           borderBottomRightRadius: 10,
         },
     },
-    courseMedia: {
+    productMedia: {
       height: 200,
       position: "relative",
       borderBottom: "1px solid #fff",
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
         borderTopRightRadius: 4,
       },
     },
-    courseContent: {
+    productContent: {
         flexGrow: 1,
         display: "flex",
         flexDirection: "column",
@@ -112,62 +112,69 @@ const useStyles = makeStyles((theme) => ({
   
   
 
-function CoursesList() {
+function ProductsList({ creatorId }) {
   const classes = useStyles();
-  const [courses, setCourses] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [creator, setCreator] = useState(null);
   const [, setLoading] = useState(true);
   const [, setError] = useState(null);
 
   useEffect(() => {
-    async function loadCourses() {
+    async function loadProducts() {
       console.log(API_URL);
       try {
-        const response = await fetch(`${API_URL}/courses`);
-        if (response.ok) {
-          const json = await response.json();
-          setCourses(json);
+        const [productsResponse, creatorResponse] = await Promise.all([
+          fetch(`${API_URL}/creators/${creatorId}/products`),
+          fetch(`${API_URL}/creators/${creatorId}`),
+        ]);
+
+        if (productsResponse.ok && creatorResponse.ok) {
+          const productsData = await productsResponse.json();
+          const creatorData = await creatorResponse.json();
+          setProducts(productsData);
+          setCreator(creatorData);
         } else {
-          throw response;
+          throw new Error('Failed to fetch data');
         }
       } catch (e) {
-        setError("An Error Occurred...");
-        console.log("An error occurred", e);
+        setError('An Error Occurred...');
+        console.log('An error occurred', e);
       } finally {
         setLoading(false);
       }
     }
-    loadCourses();
-  }, []);
+    loadProducts();
+  }, [creatorId]);
 
   return (
     <Grid container justify="center">
-      {courses.map((course) => (
-        <Grid item key={course.id}>
-          <Card className={classes.courseCard}>
+      {products.map((product) => (
+        <Grid item key={product.id}>
+          <Card className={classes.productCard}>
             <CardMedia
-              className={classes.courseMedia}
-              image={course.courseImage}
-              title={course.title}
+              className={classes.productMedia}
+              image={product.image}
+              title={product.title}
             />
-            <CardContent className={classes.courseContent}>
+            <CardContent className={classes.productContent}>
             <Typography gutterBottom variant="h5" component="h2" align="left">
-            {course.title}
+            {product.title}
           </Typography>
               <div className={classes.authorInfo}>
-                <Avatar className={classes.authorAvatar} src={course.authorAvi} />
+                <Avatar className={classes.authorAvatar} src={product.authorAvi} />
                 <Typography variant="body2">
-                  Author Name
+                  {creator.name}
                 </Typography>
               </div>
               <div className={classes.ratingContainer}>
               <Star size={10} color={"#ffffff"} />
                 <Typography variant="body2" component="span">
-                  {course.ratingVal} ({course.ratingAmt})
+                  {product.rating} ({product.ratingAmt})
                 </Typography>
               </div>
               <div className={classes.buttonContainer}>
               <Button variant="contained" className={classes.cardButton}>
-                ${course.price}
+                ${product.price}
               </Button>
               </div>
             </CardContent>
@@ -179,4 +186,4 @@ function CoursesList() {
 }
 
 
-export default CoursesList;
+export default ProductsList;
