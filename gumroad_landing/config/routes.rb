@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :landing_pages
+  resources :rich_texts
+  resources :images
   resources :creators do
     resources :products, only: [:index]
   end
