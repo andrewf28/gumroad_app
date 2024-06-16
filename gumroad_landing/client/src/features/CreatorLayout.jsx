@@ -6,6 +6,8 @@ import RichText from './props/RichText';
 import ProductsList from './products/ProductsList';
 import BarPlus from './BarPlus';
 
+const API_URL = "http://127.0.0.1:3000/api/v1";
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -21,11 +23,12 @@ const Container = styled.div`
 
 function CreatorLayout({ creatorId }) {
   const [layout, setLayout] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     async function fetchLayout() {
       try {
-        const response = await fetch(`/api/creators/${creatorId}/creator_layout`);
+        const response = await fetch(`${API_URL}/creators/${creatorId}/creator_layout`);
         const data = await response.json();
         setLayout(data.layout);
       } catch (error) {
@@ -36,14 +39,28 @@ function CreatorLayout({ creatorId }) {
     fetchLayout();
   }, [creatorId]);
 
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const response = await fetch(`${API_URL}/creators/${creatorId}/products`);
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    }
+
+    fetchProducts();
+  }, [creatorId]);
+
   const renderComponent = (component, index) => {
     switch (component.type) {
       case 'image':
-        return <ImageComponent key={component.id} {...component.props} />;
+        return <ImageComponent key={index} url={component.props.url} alt={component.props.alt} />;
       case 'rich_text':
-        return <RichText key={component.id} {...component.props} />;
+        return <RichText key={index} content={component.props.content} />;
       case 'products':
-        return <ProductsList key={component.id} {...component.props} />;
+        return <ProductsList key={index} products={products} />;
       default:
         return null;
     }
@@ -56,7 +73,7 @@ function CreatorLayout({ creatorId }) {
   return (
     <Container>
       {layout.map((component, index) => (
-        <React.Fragment key={component.id}>
+        <React.Fragment key={index}>
           {renderComponent(component, index)}
           {renderBarPlus(index)}
         </React.Fragment>

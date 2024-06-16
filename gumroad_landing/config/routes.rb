@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :creators do
         resources :products, only: [:index]
+        resource :creator_layout, only: [:show]
       end
 
       # Endpoint for viewing routes information
