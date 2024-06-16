@@ -2,16 +2,14 @@
 
 one:
   title: MyString
-  desc: MyText
-  image: MyString
-  ratingVal: 9.99
+  price: 9.99
+  rating: 9.99
   ratingAmt: 1
-  creator: one
+  image: MyString
 
 two:
   title: MyString
-  desc: MyText
-  image: MyString
-  ratingVal: 9.99
+  price: 9.99
+  rating: 9.99
   ratingAmt: 1
-  creator: two
+  image: MyString

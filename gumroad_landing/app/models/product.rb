@@ -1,3 +1,3 @@
 class Product < ApplicationRecord
-  belongs_to :creator
-end
+    belongs_to :creator
+  end

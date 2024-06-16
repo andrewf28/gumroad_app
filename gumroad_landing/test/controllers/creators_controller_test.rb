@@ -12,7 +12,7 @@ class CreatorsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create creator" do
     assert_difference("Creator.count") do
-      post creators_url, params: { creator: { image: @creator.image, name: @creator.name, ratingAmt: @creator.ratingAmt, ratingVal: @creator.ratingVal } }, as: :json
+      post creators_url, params: { creator: { name: @creator.name, pfp: @creator.pfp, rating: @creator.rating, ratingAmt: @creator.ratingAmt } }, as: :json
     end
 
     assert_response :created
@@ -24,7 +24,7 @@ class CreatorsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update creator" do
-    patch creator_url(@creator), params: { creator: { image: @creator.image, name: @creator.name, ratingAmt: @creator.ratingAmt, ratingVal: @creator.ratingVal } }, as: :json
+    patch creator_url(@creator), params: { creator: { name: @creator.name, pfp: @creator.pfp, rating: @creator.rating, ratingAmt: @creator.ratingAmt } }, as: :json
     assert_response :success
   end
 

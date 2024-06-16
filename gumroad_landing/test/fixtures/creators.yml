@@ -2,12 +2,12 @@
 
 one:
   name: MyString
-  image: MyString
-  ratingVal: 9.99
+  rating: 9.99
   ratingAmt: 1
+  pfp: MyString
 
 two:
   name: MyString
-  image: MyString
-  ratingVal: 9.99
+  rating: 9.99
   ratingAmt: 1
+  pfp: MyString
