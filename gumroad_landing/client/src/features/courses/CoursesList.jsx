@@ -56,9 +56,8 @@ const useStyles = makeStyles((theme) => ({
         alignSelf: "flex-start",
         borderTop: '1px solid #fff',
         marginBottom: theme.spacing(1),
-        backgroundColor:"#FFC0CB",
+        backgroundColor:"#ed51d8",
         // marginLeft: theme.spacing(1),
-        // paddingTop: theme.spacing(1), // Increa  },
         ratingContainer: {
             display: "flex",
             alignItems: "flex-start",
