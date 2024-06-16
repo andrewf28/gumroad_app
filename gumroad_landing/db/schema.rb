@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_06_16_031708) do
+ActiveRecord::Schema[7.2].define(version: 2024_06_16_162922) do
+  create_table "creator_layouts", force: :cascade do |t|
+    t.integer "creator_id", null: false
+    t.json "layout"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_creator_layouts_on_creator_id"
+  end
+
   create_table "creators", force: :cascade do |t|
     t.string "name"
     t.decimal "rating"
@@ -59,6 +67,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_06_16_031708) do
     t.index ["creator_id"], name: "index_rich_texts_on_creator_id"
   end
 
+  add_foreign_key "creator_layouts", "creators"
   add_foreign_key "images", "creators"
   add_foreign_key "landing_pages", "creators"
   add_foreign_key "products", "creators"

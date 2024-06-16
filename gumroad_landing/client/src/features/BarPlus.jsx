@@ -4,19 +4,21 @@ import styled from 'styled-components';
 import DropdownMenu from './DropdownMenu';
 
 const HorizontalBar = styled.div`
-  width: calc(100% - 40px); /* Subtract 40px (20px padding on each side) */
+  width: 90vw;
   height: 2px;
   background-color: #fff;
-  position: fixed;
+  position: absolute;
   display: flex;
-  left: 50%; /* Position the left side at 50% of the viewport width */
+  left: 50%;
   transform: translateX(-50%);
   justify-content: center;
   align-items: center;
-  padding: 0 20px; /* Add 20px padding on each side */
-  box-sizing: border-box; /* Include padding in the total width */
-  z-index:1000;
+  padding: 0 20px;
+  box-sizing: border-box;
+  z-index: 1000;
+
 `;
+
 const PlusSign = styled.div`
   position: absolute;
   width: 24px;
@@ -35,7 +37,13 @@ const PlusSign = styled.div`
   z-index: 1000;
 `;
 
-const BarPlus = () => {
+const BarPlusWrapper = styled.div`
+  position: sticky;
+  top: ${({ headerHeight }) => headerHeight}px;
+  z-index: 1000;
+`;
+
+const BarPlus = ({ headerHeight }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -43,10 +51,12 @@ const BarPlus = () => {
   };
 
   return (
-    <HorizontalBar>
-      <PlusSign onClick={toggleDropdown}>+</PlusSign>
-      <DropdownMenu isOpen={isOpen} />
-    </HorizontalBar>
+    <BarPlusWrapper headerHeight={headerHeight}>
+      <HorizontalBar>
+        <PlusSign onClick={toggleDropdown}>+</PlusSign>
+        <DropdownMenu isOpen={isOpen} />
+      </HorizontalBar>
+    </BarPlusWrapper>
   );
 };
 
