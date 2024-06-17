@@ -1,4 +1,4 @@
-class CreatorsController < ApplicationController
+class Api::V1::CreatorsController < ApplicationController
   before_action :set_creator, only: %i[ show update destroy ]
 
   # GET /creators
