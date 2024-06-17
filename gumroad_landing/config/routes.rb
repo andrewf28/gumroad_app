@@ -14,7 +14,7 @@ Rails.application.routes.draw do
       resources :images    # Add :create action
       resources :creators do
         resources :products, only: [:index]
-        resource :creator_layout, only: [:show]
+        resource :creator_layout, only: [:show, :create, :update]
         resources :images, only: [:index, :create]  # Add :create action
         resources :rich_texts, only: [:index]
       end

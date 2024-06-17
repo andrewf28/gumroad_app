@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
-const TextUploadForm = () => {
+const API_URL = "http://127.0.0.1:3000/api/v1";
+
+const TextUploadForm = ({ creatorId, onUpload }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
@@ -12,11 +15,20 @@ const TextUploadForm = () => {
     setDescription(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // TODO: Handle form submission (e.g., send data to server)
-    console.log('Title:', title);
-    console.log('Description:', description);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${API_URL}/rich_texts`, {
+        rich_text: {
+          title: title,
+          description: description,
+          creator_id: creatorId,
+        },
+      });
+      onUpload(response.data);
+    } catch (error) {
+      console.error('Error uploading text:', error);
+    }
   };
 
   return (
