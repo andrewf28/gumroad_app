@@ -7,6 +7,7 @@ import ImageUploadForm from './features/forms/ImageUploadForm';
 import TextUploadForm from './features/forms/TextUploadForm';
 import ImageComponent from './features/props/ImageComponent';
 import ProductComponent from './features/products/ProductComponent';
+import SingleProductForm from './features/forms/SingleProductForm';
 
 function App() {
   return (

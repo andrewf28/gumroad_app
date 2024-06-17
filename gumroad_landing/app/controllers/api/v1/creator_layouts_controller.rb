@@ -46,6 +46,19 @@ module Api
                 type: 'products',
                 products: nil
               }
+            when 'product_component'
+              if component[:product_id].present?
+                product = Product.find_by(id: component[:product_id])
+                if product
+                  {
+                    type: 'product_component',
+                    product_id: product.id,
+                    title: component[:title],
+                    desc: component[:desc]
+                    # Include any other necessary product component data
+                  }
+                end
+              end
             else
               component
             end
