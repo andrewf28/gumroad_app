@@ -18,6 +18,7 @@ const DropdownList = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 0;
+  z-index: 1000;
 `;
 
 const DropdownItem = styled.li`
@@ -62,21 +63,23 @@ const SubDropdownItem = styled.li`
   }
 `;
 
-const DropdownMenu = ({ isOpen }) => {
+const DropdownMenu = ({ isOpen, onSelect }) => {
+  const handleSelect = (type) => {
+    onSelect(type);
+  };
+
   return (
     <DropdownWrapper isOpen={isOpen}>
       <DropdownList>
-        
-        <DropdownItem>Rich Text</DropdownItem>
-        <DropdownItem>Image</DropdownItem>
-        <DropdownItem>Products</DropdownItem>
-        <DropdownItem>Socials</DropdownItem>
+        <DropdownItem onClick={() => handleSelect('rich_text')}>Rich Text</DropdownItem>
+        <DropdownItem onClick={() => handleSelect('image')}>Image</DropdownItem>
+        <DropdownItem onClick={() => handleSelect('products')}>Products</DropdownItem>
         <DropdownItem>
           Socials •
           <SubDropdownList>
-            <SubDropdownItem>Instagram</SubDropdownItem>
-            <SubDropdownItem>Twitter</SubDropdownItem>
-            <SubDropdownItem>TikTok</SubDropdownItem>
+            <SubDropdownItem onClick={() => handleSelect('instagram')}>Instagram</SubDropdownItem>
+            <SubDropdownItem onClick={() => handleSelect('twitter')}>Twitter</SubDropdownItem>
+            <SubDropdownItem onClick={() => handleSelect('tiktok')}>TikTok</SubDropdownItem>
           </SubDropdownList>
         </DropdownItem>
       </DropdownList>
@@ -85,3 +88,4 @@ const DropdownMenu = ({ isOpen }) => {
 };
 
 export default DropdownMenu;
+

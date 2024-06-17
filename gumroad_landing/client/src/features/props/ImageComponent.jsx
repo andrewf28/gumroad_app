@@ -51,12 +51,15 @@ const Text = styled.p`
 
 function ImageComponent({ image_id }) {
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function loadImage() {
       console.log(API_URL);
       try {
         const imageResponse = await fetch(`${API_URL}/images/${image_id}`);
+        console.log(`${API_URL}/images/${image_id}`);
         if (imageResponse.ok) {
           const imageData = await imageResponse.json();
           setImage(imageData);

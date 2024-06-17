@@ -15,7 +15,7 @@ const HorizontalBar = styled.div`
   align-items: center;
   padding: 0 20px;
   box-sizing: border-box;
-  z-index: 1000;
+  z-index: 999;
 
 `;
 
@@ -34,7 +34,7 @@ const PlusSign = styled.div`
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  z-index: 1000;
+  z-index: 999;
 `;
 
 const BarPlusWrapper = styled.div`
@@ -43,18 +43,23 @@ const BarPlusWrapper = styled.div`
   z-index: 1000;
 `;
 
-const BarPlus = ({ headerHeight }) => {
+const BarPlus = ({ headerHeight, onAddElement, index }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleSelect = (type) => {
+    onAddElement(type, index);
+    setIsOpen(false);
+  };
+
   return (
     <BarPlusWrapper headerHeight={headerHeight}>
       <HorizontalBar>
         <PlusSign onClick={toggleDropdown}>+</PlusSign>
-        <DropdownMenu isOpen={isOpen} />
+        <DropdownMenu isOpen={isOpen} onSelect={handleSelect} />
       </HorizontalBar>
     </BarPlusWrapper>
   );

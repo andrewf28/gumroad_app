@@ -18,7 +18,7 @@ class Api::V1::ImagesController < ApplicationController
     @image = Image.new(image_params)
 
     if @image.save
-      render json: @image, status: :created, location: @image
+      render json: @image, status: :created
     else
       render json: @image.errors, status: :unprocessable_entity
     end

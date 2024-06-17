@@ -5,6 +5,9 @@ import ImageComponent from "./props/ImageComponent"
 import RichText from './props/RichText';
 import ProductsList from './products/ProductsList';
 import BarPlus from './BarPlus';
+import RichText2 from './props/RichText2';
+import ImageUploadForm from './forms/ImageUploadForm';
+import TextUploadForm from './forms/TextUploadForm';
 
 const API_URL = "http://127.0.0.1:3000/api/v1";
 
@@ -23,6 +26,7 @@ const Container = styled.div`
 
 function CreatorLayout({ creatorId }) {
   const [layout, setLayout] = useState([]);
+  const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
 
   useEffect(() => {
     async function fetchLayout() {
@@ -38,8 +42,41 @@ function CreatorLayout({ creatorId }) {
     fetchLayout();
   }, [creatorId]);
 
+  const handleAddElement = (type, index) => {
+    index += 1;
+    if (type === 'products') {
+      setLayout((prevLayout) => [
+        ...prevLayout.slice(0, index),
+        { type: 'products' },
+        ...prevLayout.slice(index),
+      ]);
+    } else if (type === 'image') {
+      setLayout((prevLayout) => [
+        ...prevLayout.slice(0, index),
+        { type: 'image_upload_form' },
+        ...prevLayout.slice(index),
+      ]);
+    } else if (type === 'rich_text') {
+      setLayout((prevLayout) => [
+        ...prevLayout.slice(0, index),
+        { type: 'text_upload_form' },
+        ...prevLayout.slice(index),
+      ]);
+    }
+    setOpenDropdownIndex(null);
+  };
+
   const renderBarPlus = (index) => {
-    return <BarPlus key={`bar-plus-${index}`} top={index * 20 + 10} />; // Adjust the top value as needed
+    return (
+      <BarPlus
+        key={`bar-plus-${index}`}
+        top={index * 20 + 10}
+        onAddElement={(type) => handleAddElement(type, index)}
+        index={index}
+        isOpen={openDropdownIndex === index}
+        onToggle={() => setOpenDropdownIndex(openDropdownIndex === index ? null : index)}
+      />
+    );
   };
 
   return (
@@ -54,6 +91,12 @@ function CreatorLayout({ creatorId }) {
           )}
           {component.type === 'products' && (
             <ProductsList creatorId={creatorId} />
+          )}
+          {component.type === 'image_upload_form' && (
+            <ImageUploadForm />
+          )}
+          {component.type === 'text_upload_form' && (
+            <TextUploadForm />
           )}
           {renderBarPlus(index)}
         </React.Fragment>
