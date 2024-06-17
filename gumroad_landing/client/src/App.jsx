@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import ImageUploadForm from './features/forms/ImageUploadForm';
 import TextUploadForm from './features/forms/TextUploadForm';
 import ImageComponent from './features/props/ImageComponent';
-
+import ProductComponent from './features/products/ProductComponent';
 
 function App() {
   return (

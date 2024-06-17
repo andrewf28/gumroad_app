@@ -4,17 +4,20 @@ const API_URL = "http://127.0.0.1:3000/api/v1";
 
 
 const Card = styled.div`
-  background-color: #ffffff;
+  background-color: #000;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  padding: 24px;
+  box-shadow: 0 2px 4px #ffffff;
   display: flex;
+  align-content:center;
   width: 90vw; /* Added this line */
   margin: 0 auto; /* Added this line to center the Card */
 `;
 
 const ImageContainer = styled.div`
-  width: 50%;
+  width: 20%;
   position: relative;
 `;
 

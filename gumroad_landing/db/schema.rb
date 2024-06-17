@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_06_16_162922) do
+ActiveRecord::Schema[7.2].define(version: 2024_06_17_033342) do
   create_table "creator_layouts", force: :cascade do |t|
     t.integer "creator_id", null: false
     t.json "layout"
@@ -44,6 +44,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_06_16_162922) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["creator_id"], name: "index_landing_pages_on_creator_id"
+  end
+
+  create_table "product_components", force: :cascade do |t|
+    t.integer "product_id"
+    t.string "title"
+    t.string "desc"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "products", force: :cascade do |t|
