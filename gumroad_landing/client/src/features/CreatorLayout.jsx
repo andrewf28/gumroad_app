@@ -9,6 +9,7 @@ import RichText2 from './props/RichText2';
 import ImageUploadForm from './forms/ImageUploadForm';
 import TextUploadForm from './forms/TextUploadForm';
 import ProductComponent from './products/ProductComponent';
+import SingleProductForm from './forms/SingleProductForm';
 import axios from "axios";
 
 const API_URL = "http://127.0.0.1:3000/api/v1";
@@ -44,6 +45,28 @@ function CreatorLayout({ creatorId }) {
 
     fetchLayout();
   }, [creatorId]);
+
+  const handleSingleProductUpload = async (productData, index) => {
+    try {
+      const updatedLayout = [...layout];
+      updatedLayout[index] = {
+        type: 'product_component',
+        product_id: productData.id,
+        title: productData.title,
+        desc: productData.desc,
+        // Include any other necessary product data
+      };
+
+      const response = await axios.put(
+        `${API_URL}/creators/${creatorId}/creator_layout`,
+        { layout: updatedLayout }
+      );
+
+      setLayout(response.data.layout);
+    } catch (error) {
+      console.error('Error updating creator layout:', error);
+    }
+  };
   
   const handleImageUpload = async (imageData, index) => {
     try {
@@ -88,6 +111,8 @@ function CreatorLayout({ creatorId }) {
   }
 };
 
+
+
 const handleAddElement = async (type, index) => {
   index += 1;
   if (type === 'products') {
@@ -119,7 +144,13 @@ const handleAddElement = async (type, index) => {
       { type: 'text_upload_form' },
       ...prevLayout.slice(index),
     ]);
-  }
+  } else if (type === 'single_product') {
+  setLayout((prevLayout) => [
+    ...prevLayout.slice(0, index),
+    { type: 'single_product_form' },
+    ...prevLayout.slice(index),
+  ]);
+}
 };
 
   const renderBarPlus = (index) => {
@@ -149,6 +180,9 @@ const handleAddElement = async (type, index) => {
           {component.type === 'products' && (
             <ProductsList creatorId={creatorId} />
           )}
+          {component.type === 'product_component' && (
+          <ProductComponent productId={component.product_id} />
+        )}
           {component.type === 'image_upload_form' && (
             <ImageUploadForm
               creatorId={creatorId}
@@ -163,6 +197,12 @@ const handleAddElement = async (type, index) => {
             index={index}
           />
           )}
+          {component.type === 'single_product_form' && (
+          <SingleProductForm
+            onUpload={(productData) => handleSingleProductUpload(productData, index)}
+            index={index}
+          />
+        )}
           {renderBarPlus(index)}
         </React.Fragment>
       ))}

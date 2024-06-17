@@ -7,6 +7,7 @@ const API_URL = "http://127.0.0.1:3000/api/v1";
 const useStyles = makeStyles((theme) => ({
   productContainer: {
     display: "flex",
+    justifyContent: "space-between",
     alignItems: "center",
     marginBottom: theme.spacing(4),
   },
@@ -78,9 +79,16 @@ const useStyles = makeStyles((theme) => ({
     height: 20,
   },
   productInfo: {
-    marginLeft: theme.spacing(4),
+    flexGrow: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    padding: theme.spacing(2),
   },
 }));
+
 
 const Star = ({ size, color }) => {
   return (
@@ -102,24 +110,35 @@ function ProductComponent({ productId }) {
     const classes = useStyles();
     const [product, setProduct] = useState(null);
     const [creator, setCreator] = useState(null);
+    const [productComponent, setProductComponent] = useState(null);
+    
   
     useEffect(() => {
       async function fetchProduct() {
         try {
-          const response = await fetch(`${API_URL}/products/${productId}`);
-          if (response.ok) {
-            const productData = await response.json();
-            setProduct(productData);
-  
-            const creatorResponse = await fetch(`${API_URL}/creators/${productData.creator_id}`);
-            if (creatorResponse.ok) {
-              const creatorData = await creatorResponse.json();
-              setCreator(creatorData);
+          const componentResponse = await fetch(`${API_URL}/product_components/${productId}`);
+          if (componentResponse.ok){
+            console.log("response json",componentResponse.json);
+            const componentData = await componentResponse.json();
+            setProductComponent(componentData);
+            // console.log(componentData);
+
+            const response = await fetch(`${API_URL}/products/${componentData.product_id}`);
+            console.log(`${API_URL}/products/${componentData.product_id}`);
+            if (response.ok) {
+              const productData = await response.json();
+              setProduct(productData);
+    
+              const creatorResponse = await fetch(`${API_URL}/creators/${productData.creator_id}`);
+              if (creatorResponse.ok) {
+                const creatorData = await creatorResponse.json();
+                setCreator(creatorData);
+              } else {
+                throw new Error("Failed to fetch creator data");
+              }
             } else {
-              throw new Error("Failed to fetch creator data");
+              throw new Error("Failed to fetch product data");
             }
-          } else {
-            throw new Error("Failed to fetch product data");
           }
         } catch (error) {
           console.error("Error fetching product data:", error);
@@ -130,44 +149,45 @@ function ProductComponent({ productId }) {
     }, [productId]);
   
     if (!product || !creator) {
+      console.log('PRODUCT',product);
       return <div>Loading...</div>;
     }
   
     return (
-        <div className={classes.productContainer}>
-          <Card className={classes.productCard}>
-            <CardMedia className={classes.productMedia} image={product.image} title={product.title} />
-            <CardContent className={classes.productContent}>
-              <Typography gutterBottom variant="h5" component="h2" align="left">
-                {product.title}
+      <div className={classes.productContainer}>
+        <Card className={classes.productCard}>
+          <CardMedia className={classes.productMedia} image={product.image} title={product.title} />
+          <CardContent className={classes.productContent}>
+            <Typography gutterBottom variant="h5" component="h2" align="left">
+              {product.title}
+            </Typography>
+            <div className={classes.authorInfo}>
+              <Avatar className={classes.authorAvatar} src={creator.pfp} />
+              <Typography variant="body2">{creator.name}</Typography>
+            </div>
+            <div className={classes.ratingContainer}>
+              <Star size={10} color={"#ffffff"} />
+              <Typography variant="body2" component="span">
+                {product.rating} ({product.ratingAmt})
               </Typography>
-              <div className={classes.authorInfo}>
-                <Avatar className={classes.authorAvatar} src={creator.pfp} />
-                <Typography variant="body2">{creator.name}</Typography>
-              </div>
-              <div className={classes.ratingContainer}>
-                <Star size={10} color={"#ffffff"} />
-                <Typography variant="body2" component="span">
-                  {product.rating} ({product.ratingAmt})
-                </Typography>
-              </div>
-              <div className={classes.buttonContainer}>
-                <Button variant="contained" className={classes.cardButton}>
-                  ${product.price}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-          <div className={classes.productInfo}>
-            <Typography variant="h4" component="h1" gutterBottom>
-              HI
-            </Typography>
-            <Typography variant="body1" component="p">
-              Hey
-            </Typography>
-          </div>
+            </div>
+            <div className={classes.buttonContainer}>
+              <Button variant="contained" className={classes.cardButton}>
+                ${product.price}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+        <div className={classes.productInfo}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            {productComponent.title}
+          </Typography>
+          <Typography variant="body1" component="p">
+            {productComponent.desc}
+          </Typography>
         </div>
-      );
+      </div>
+    );
     }
     
     export default ProductComponent;
