@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Input, Textarea, Button, Stack, FormControl, FormLabel } from '@chakra-ui/react';
 
 const API_URL = "http://127.0.0.1:3000/api/v1";
 
@@ -27,24 +28,40 @@ function ImageUploadForm({ creatorId, onUpload }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <textarea
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      ></textarea>
-      <input
-        type="text"
-        placeholder="Image URL"
-        value={imageUrl}
-        onChange={(e) => setImageUrl(e.target.value)}
-      />
-      <button type="submit">Upload</button>
+      <Stack spacing={3}>
+        <FormControl id="title">
+          <FormLabel>Title</FormLabel>
+          <Input
+            type="text"
+            placeholder="Enter title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            variant="filled"
+          />
+        </FormControl>
+        <FormControl id="description">
+          <FormLabel>Description</FormLabel>
+          <Textarea
+            placeholder="Enter description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            variant="filled"
+          />
+        </FormControl>
+        <FormControl id="imageUrl">
+          <FormLabel>Image URL</FormLabel>
+          <Input
+            type="text"
+            placeholder="Enter image URL"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+            variant="filled"
+          />
+        </FormControl>
+        <Button type="submit" colorScheme="blue">
+          Upload
+        </Button>
+      </Stack>
     </form>
   );
 }

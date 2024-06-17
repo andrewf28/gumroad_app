@@ -73,7 +73,15 @@ const DropdownMenu = ({ isOpen, onSelect }) => {
       <DropdownList>
         <DropdownItem onClick={() => handleSelect('rich_text')}>Rich Text</DropdownItem>
         <DropdownItem onClick={() => handleSelect('image')}>Image</DropdownItem>
-        <DropdownItem onClick={() => handleSelect('products')}>Products</DropdownItem>
+        <DropdownItem onClick={() => handleSelect('products')}>
+          Products
+          <SubDropdownList>
+            <SubDropdownItem onClick={() => handleSelect('instagram')}>Single</SubDropdownItem>
+            <SubDropdownItem onClick={() => handleSelect('twitter')}>All</SubDropdownItem>
+          </SubDropdownList>
+        </DropdownItem>
+        
+        
         <DropdownItem>
           Socials •
           <SubDropdownList>

@@ -5,18 +5,19 @@ import axios from 'axios'; // or any other library for making API requests
 const API_URL = "http://127.0.0.1:3000/api/v1";
 
 const Card = styled.div`
-  background-color: #878787;
+  background-color: #000;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px #ffffff;
   padding: 24px;
-  width: 80vw;
+  width: 90vw;
+  align-content:center;
 `;
 
 const Title = styled.h1`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 16px;
-  color: #000;
+  color: #ffffff;
 `;
 
 const Divider = styled.hr`
