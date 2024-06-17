@@ -8,7 +8,7 @@ import BarPlus from './BarPlus';
 import RichText2 from './props/RichText2';
 import ImageUploadForm from './forms/ImageUploadForm';
 import TextUploadForm from './forms/TextUploadForm';
-
+import ProductComponent from './products/ProductComponent';
 import axios from "axios";
 
 const API_URL = "http://127.0.0.1:3000/api/v1";
@@ -136,6 +136,7 @@ const handleAddElement = async (type, index) => {
   };
 
   return (
+    
     <Container>
       {layout.map((component, index) => (
         <React.Fragment key={index}>

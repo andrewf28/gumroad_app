@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :rich_texts
+      resources :products
       resources :images    # Add :create action
       resources :creators do
         resources :products, only: [:index]
