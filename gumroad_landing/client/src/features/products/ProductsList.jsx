@@ -112,39 +112,42 @@ const useStyles = makeStyles((theme) => ({
   
   
 
-function ProductsList({ creatorId }) {
-  const classes = useStyles();
-  const [products, setProducts] = useState([]);
-  const [creator, setCreator] = useState(null);
-  const [, setLoading] = useState(true);
-  const [, setError] = useState(null);
-
-  useEffect(() => {
-    async function loadProducts() {
-      console.log(API_URL);
-      try {
-        const [productsResponse, creatorResponse] = await Promise.all([
-          fetch(`${API_URL}/creators/${creatorId}/products`),
-          fetch(`${API_URL}/creators/${creatorId}`),
-        ]);
-
-        if (productsResponse.ok && creatorResponse.ok) {
-          const productsData = await productsResponse.json();
-          const creatorData = await creatorResponse.json();
-          setProducts(productsData);
-          setCreator(creatorData);
-        } else {
-          throw new Error('Failed to fetch data');
+  function ProductsList({ creatorId }) {
+    const classes = useStyles();
+    const [products, setProducts] = useState([]);
+    const [creator, setCreator] = useState(null);
+    const [, setLoading] = useState(true);
+    const [, setError] = useState(null);
+  
+    useEffect(() => {
+      async function loadProducts() {
+        console.log(API_URL);
+        try {
+          const [productsResponse, creatorResponse] = await Promise.all([
+            fetch(`${API_URL}/creators/${creatorId}/products`),
+            fetch(`${API_URL}/creators/${creatorId}`),
+          ]);
+  
+          if (productsResponse.ok && creatorResponse.ok) {
+            const productsData = await productsResponse.json();
+            const creatorData = await creatorResponse.json();
+            const filteredProducts = productsData.filter(
+              (product) => product.creator_id == creatorId
+            );
+            setProducts(filteredProducts);
+            setCreator(creatorData);
+          } else {
+            throw new Error('Failed to fetch data');
+          }
+        } catch (e) {
+          setError('An Error Occurred...');
+          console.log('An error occurred', e);
+        } finally {
+          setLoading(false);
         }
-      } catch (e) {
-        setError('An Error Occurred...');
-        console.log('An error occurred', e);
-      } finally {
-        setLoading(false);
       }
-    }
-    loadProducts();
-  }, [creatorId]);
+      loadProducts();
+    }, [creatorId]);
 
   return (
     <Grid container justify="center">

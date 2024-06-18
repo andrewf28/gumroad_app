@@ -14,7 +14,7 @@ end
 # Create test products, images, and rich texts for each creator
 Creator.all.each do |creator|
   # Create test products
-  5.times do
+  2.times do
     creator.products.create(
       title: Faker::Commerce.product_name,
       price: Faker::Commerce.price(range: 10..100.0),
@@ -53,10 +53,6 @@ Creator.all.each do |creator|
       type: 'rich_text',
       rich_text_id: creator.rich_texts.sample.id
     },
-    {
-      type: 'products',
-      products: nil
-    }
   ]
 
   creator.create_creator_layout(layout: layout)
